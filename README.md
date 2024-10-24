@@ -48,5 +48,5 @@ npm install
 ### 4. Correr la aplicación
 
 ```bash
-npm run dev
+npm run watch 
 ```
