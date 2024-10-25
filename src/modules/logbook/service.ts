@@ -30,30 +30,42 @@ class UserService {
     }
   }
 
-  async searchLogBooks(criteria: {
-    title?: string;
-    date?: Date;
-    latitude?: number;
-    longitude?: number;
-    species?: string;
-  }): Promise<ILogBook[] | null> {
+  async searchLogBooks(
+    criteria: {
+      title?: string;
+      date?: Date;
+      latitude?: number;
+      longitude?: number;
+      species?: string;
+    },
+    sort: { field: string; order: "asc" | "desc" } = {
+      field: "date",
+      order: "desc",
+    }
+  ): Promise<ILogBook[] | null> {
     try {
-      return await LogBookRepository.searchLogBooks(criteria);
+      return await LogBookRepository.searchLogBooks(criteria, sort);
     } catch (error) {
       throw new Error("Something went wrong during search");
     }
   }
 
-  async filterLogBooks(criteria: {
-    startDate?: Date;
-    endDate?: Date;
-    latitude?: number;
-    longitude?: number;
-    habitatType?: string;
-    climate?: string;
-  }): Promise<ILogBook[] | null> {
+  async filterLogBooks(
+    criteria: {
+      startDate?: Date;
+      endDate?: Date;
+      latitude?: number;
+      longitude?: number;
+      habitatType?: string;
+      climate?: string;
+    },
+    sort: { field: string; order: "asc" | "desc" } = {
+      field: "date",
+      order: "desc",
+    }
+  ): Promise<ILogBook[] | null> {
     try {
-      return await LogBookRepository.filterLogBooks(criteria);
+      return await LogBookRepository.filterLogBooks(criteria, sort);
     } catch (error) {
       throw new Error("Something went wrong during search");
     }

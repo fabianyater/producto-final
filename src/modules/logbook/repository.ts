@@ -13,13 +13,19 @@ class LogBookRepository {
     return await LogBook.findOne({ _id: id });
   }
 
-  async searchLogBooks(query: {
-    title?: string;
-    date?: Date;
-    latitude?: number;
-    longitude?: number;
-    species?: string;
-  }): Promise<ILogBook[] | null> {
+  async searchLogBooks(
+    query: {
+      title?: string;
+      date?: Date;
+      latitude?: number;
+      longitude?: number;
+      species?: string;
+    },
+    sort: { field: string; order: "asc" | "desc" } = {
+      field: "date",
+      order: "desc",
+    }
+  ): Promise<ILogBook[] | null> {
     const searchQuery: FilterQuery<ILogBook> = {};
 
     if (query.title) {
@@ -48,17 +54,25 @@ class LogBookRepository {
       };
     }
 
-    return await LogBook.find(searchQuery);
+    return await LogBook.find(searchQuery).sort({
+      [sort.field]: sort.order === "asc" ? 1 : -1,
+    });
   }
 
-  async filterLogBooks(query: {
-    startDate?: Date;
-    endDate?: Date;
-    latitude?: number;
-    longitude?: number;
-    habitatType?: string;
-    climate?: string;
-  }): Promise<ILogBook[]> {
+  async filterLogBooks(
+    query: {
+      startDate?: Date;
+      endDate?: Date;
+      latitude?: number;
+      longitude?: number;
+      habitatType?: string;
+      climate?: string;
+    },
+    sort: { field: string; order: "asc" | "desc" } = {
+      field: "date",
+      order: "desc",
+    }
+  ): Promise<ILogBook[]> {
     const searchQuery: FilterQuery<ILogBook> = {};
 
     if (query.startDate && query.endDate) {
@@ -84,7 +98,9 @@ class LogBookRepository {
       searchQuery["habitat.climate"] = { $regex: query.climate, $options: "i" };
     }
 
-    return await LogBook.find(searchQuery);
+    return await LogBook.find(searchQuery).sort({
+      [sort.field]: sort.order === "asc" ? 1 : -1,
+    });
   }
 }
 

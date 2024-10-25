@@ -47,6 +47,11 @@ export const searchLogBooks = async (
 ): Promise<Response | void> => {
   try {
     const { title, date, latitude, longitude, species } = req.query;
+    const field = req.query.field ? String(req.query.field) : "date";
+    const order: "asc" | "desc" =
+      req.query.order === "asc" || req.query.order === "desc"
+        ? req.query.order
+        : "desc";
 
     const searchCriteria = {
       title: title?.toString(),
@@ -56,7 +61,9 @@ export const searchLogBooks = async (
       species: species?.toString(),
     };
 
-    const logBooks = await LogBookService.searchLogBooks(searchCriteria);
+    const sort = { field, order };
+
+    const logBooks = await LogBookService.searchLogBooks(searchCriteria, sort);
     res.status(200).json(logBooks);
   } catch (error) {
     return next(error);
@@ -72,6 +79,12 @@ export const filterLogBooks = async (
     const { startDate, endDate, latitude, longitude, habitatType, climate } =
       req.query;
 
+    const field = req.query.field ? String(req.query.field) : "date";
+    const order: "asc" | "desc" =
+      req.query.order === "asc" || req.query.order === "desc"
+        ? req.query.order
+        : "desc";
+
     const filterCriteria = {
       startDate: startDate ? new Date(startDate.toString()) : undefined,
       endDate: endDate ? new Date(endDate.toString()) : undefined,
@@ -81,7 +94,9 @@ export const filterLogBooks = async (
       climate: climate?.toString(),
     };
 
-    const logBooks = await LogBookService.filterLogBooks(filterCriteria);
+    const sort = { field, order };
+
+    const logBooks = await LogBookService.filterLogBooks(filterCriteria, sort);
     res.status(200).json(logBooks);
   } catch (error) {
     return next(error);
