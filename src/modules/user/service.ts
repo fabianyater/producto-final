@@ -1,4 +1,8 @@
 import bcrypt from "bcrypt";
+import {
+  BadRequestError,
+  NotFoundError,
+} from "../../common/errors/customError";
 import UserRepository from "./repository";
 import { RegisterUserDTO } from "./types";
 import { IUser } from "./User";
@@ -9,15 +13,40 @@ class UserService {
     userData.password = hashedPassword;
 
     const existingUser = await UserRepository.findUserByEmail(userData.email);
+
     if (existingUser) {
-      throw new Error("User already exists");
+      throw new BadRequestError("User already exists");
     }
 
-    return await UserRepository.createUser(userData as IUser);
+    try {
+      return await UserRepository.createUser(userData as IUser);
+    } catch (error: any) {
+      if (error.name === "ValidationError") {
+        const messages = Object.values(error.errors).map(
+          (err: any) => err.message
+        );
+        throw new BadRequestError(`Validation failed: ${messages.join(", ")}`);
+      }
+
+      if (error.code === 11000) {
+        throw new BadRequestError(
+          `Duplicate field: ${Object.keys(error.keyValue).join(", ")}`
+        );
+      }
+
+      throw new Error("Something went wrong");
+    }
   }
 
   async getUserById(userId: string): Promise<IUser | null> {
-    return await UserRepository.findUserById(userId);
+    const user = await UserRepository.findUserById(userId);
+    console.log(user);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    return user;
   }
 
   async getAllUsers(): Promise<IUser[]> {

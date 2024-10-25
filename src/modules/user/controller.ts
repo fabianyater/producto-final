@@ -26,14 +26,9 @@ const registerUser = async (
       role,
     };
 
-    const user = await UserService.registerUser(userData);
+    await UserService.registerUser(userData);
 
-    return res.status(201).json({
-      message: `${
-        role.charAt(0).toUpperCase() + role.slice(1)
-      } registration successful`,
-      user,
-    });
+    return res.status(201).json({ message: "User registered succesfully" });
   } catch (error) {
     return next(error);
   }
@@ -46,6 +41,7 @@ export const getUserProfile = async (
 ): Promise<Response | void> => {
   try {
     if (req.user) {
+      console.log(req.user?.userId);
       const user = await UserService.getUserById(req.user.userId as string);
 
       if (user) {
@@ -121,6 +117,6 @@ export const deleteUser = async (
 
     res.status(200).json({ message: "User deleted successfully." });
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };
