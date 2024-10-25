@@ -1,4 +1,6 @@
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
+import { CustomError } from "./common/errors/customError";
+import { errorHandler } from "./common/middlewars/errorHandler";
 import connectDB from "./config/db";
 import authRoutes from "./modules/auth/routes";
 import logBookRoutes from "./modules/logbook/routes";
@@ -14,5 +16,16 @@ app.use("/auth", authRoutes);
 
 app.use("/users", userRoutes);
 app.use("/logbooks", logBookRoutes);
+
+app.use(
+  (
+    err: Error | CustomError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    errorHandler(err, req, res, next);
+  }
+);
 
 export default app;
