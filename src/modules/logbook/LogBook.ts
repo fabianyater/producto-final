@@ -6,6 +6,7 @@ const logBookSchema: Schema<ILogBook> = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      unique: true,
     },
     date: {
       type: Date,
@@ -140,6 +141,9 @@ const logBookSchema: Schema<ILogBook> = new mongoose.Schema(
   { timestamps: true }
 );
 
-const LogBook: Model<ILogBook> = mongoose.model<ILogBook>("LogBook", logBookSchema);
+const LogBook: Model<ILogBook> = mongoose.model<ILogBook>(
+  "LogBook",
+  logBookSchema
+);
 
 export default LogBook;
