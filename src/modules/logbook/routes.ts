@@ -1,5 +1,5 @@
 import express from "express";
-import { addNewLogBook, filterLogBooks, listLogBooksPaginated, searchLogBooks } from "./controller";
+import { addNewLogBook, filterLogBooks, getLogBookById, listLogBooksPaginated, searchLogBooks } from "./controller";
 import { authenticate } from "../../common/middlewars/auth";
 
 const router = express.Router();
@@ -32,6 +32,14 @@ router.get("/filter", authenticate, async (req, res, next) => {
 router.get("/", authenticate, async (req, res, next) => {
   try {
     await listLogBooksPaginated(req, res, next);
+  } catch (error) {
+    next(error)
+  }
+});
+
+router.get("/:id", authenticate, async (req, res, next) => {
+  try {
+    await getLogBookById(req, res, next);
   } catch (error) {
     next(error)
   }

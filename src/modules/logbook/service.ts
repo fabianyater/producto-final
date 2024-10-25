@@ -30,6 +30,20 @@ class UserService {
     }
   }
 
+  async getLogBookById(id: string): Promise<ILogBook | null> {
+    const existingLogBook = await LogBookRepository.findLogBookById(id);
+
+    if (!existingLogBook) {
+      throw new BadRequestError("LogBook does not exist");
+    }
+
+    try {
+      return existingLogBook;
+    } catch (error) {
+      throw new Error("Something went wrong during search");
+    }
+  }
+
   async searchLogBooks(
     criteria: {
       title?: string;

@@ -127,3 +127,30 @@ export const listLogBooksPaginated = async (
     return next(error);
   }
 };
+
+export interface AuthenticatedRequest extends Request {
+  logBook?: {
+    id: string;
+    [key: string]: unknown;
+  };
+}
+
+export const getLogBookById = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    const logBookId = req.params.id;
+
+    if (logBookId) {
+      const logBook = await LogBookService.getLogBookById(logBookId);
+
+      return res.status(200).json(logBook);
+    } else {
+      return res.status(404).json({ message: "LogBook not found" });
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
