@@ -3,6 +3,7 @@ import {
   BadRequestError,
   NotFoundError,
 } from "../../common/errors/customError";
+import PermissionService from "../permissions/service";
 import UserRepository from "./repository";
 import { RegisterUserDTO } from "./types";
 import { IUser } from "./User";
@@ -19,7 +20,14 @@ class UserService {
     }
 
     try {
-      return await UserRepository.createUser(userData as IUser);
+      const newUser = await UserRepository.createUser(userData as IUser);
+
+      await PermissionService.assignDefaultPermissions(
+        newUser._id as string,
+        userData.role
+      );
+
+      return newUser;
     } catch (error: any) {
       if (error.name === "ValidationError") {
         const messages = Object.values(error.errors).map(
@@ -40,7 +48,6 @@ class UserService {
 
   async getUserById(userId: string): Promise<IUser | null> {
     const user = await UserRepository.findUserById(userId);
-    console.log(user);
 
     if (!user) {
       throw new NotFoundError("User not found");
