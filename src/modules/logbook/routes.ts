@@ -1,5 +1,5 @@
 import express from "express";
-import { addNewLogBook, searchLogBooks } from "./controller";
+import { addNewLogBook, filterLogBooks, searchLogBooks } from "./controller";
 import { authenticate } from "../../common/middlewars/auth";
 
 const router = express.Router();
@@ -16,6 +16,14 @@ router.post("/", authenticate, async (req, res, next) => {
 router.get("/search", authenticate, async (req, res, next) => {
   try {
     await searchLogBooks(req, res, next);
+  } catch (error) {
+    next(error)
+  }
+});
+
+router.get("/filter", authenticate, async (req, res, next) => {
+  try {
+    await filterLogBooks(req, res, next);
   } catch (error) {
     next(error)
   }

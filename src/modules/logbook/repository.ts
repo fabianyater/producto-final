@@ -50,6 +50,42 @@ class LogBookRepository {
 
     return await LogBook.find(searchQuery);
   }
+
+  async filterLogBooks(query: {
+    startDate?: Date;
+    endDate?: Date;
+    latitude?: number;
+    longitude?: number;
+    habitatType?: string;
+    climate?: string;
+  }): Promise<ILogBook[]> {
+    const searchQuery: FilterQuery<ILogBook> = {};
+
+    if (query.startDate && query.endDate) {
+      searchQuery.date = {
+        $gte: new Date(query.startDate),
+        $lte: new Date(query.endDate),
+      };
+    }
+
+    if (query.latitude && query.longitude) {
+      searchQuery["location.latitude"] = query.latitude;
+      searchQuery["location.longitude"] = query.longitude;
+    }
+
+    if (query.habitatType) {
+      searchQuery["habitat.vegetationType"] = {
+        $regex: query.habitatType,
+        $options: "i",
+      };
+    }
+
+    if (query.climate) {
+      searchQuery["habitat.climate"] = { $regex: query.climate, $options: "i" };
+    }
+
+    return await LogBook.find(searchQuery);
+  }
 }
 
 export default new LogBookRepository();

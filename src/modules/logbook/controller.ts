@@ -62,3 +62,28 @@ export const searchLogBooks = async (
     return next(error);
   }
 };
+
+export const filterLogBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    const { startDate, endDate, latitude, longitude, habitatType, climate } =
+      req.query;
+
+    const filterCriteria = {
+      startDate: startDate ? new Date(startDate.toString()) : undefined,
+      endDate: endDate ? new Date(endDate.toString()) : undefined,
+      latitude: latitude ? parseFloat(latitude.toString()) : undefined,
+      longitude: longitude ? parseFloat(longitude.toString()) : undefined,
+      habitatType: habitatType?.toString(),
+      climate: climate?.toString(),
+    };
+
+    const logBooks = await LogBookService.filterLogBooks(filterCriteria);
+    res.status(200).json(logBooks);
+  } catch (error) {
+    return next(error);
+  }
+};

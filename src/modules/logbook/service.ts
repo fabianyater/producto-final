@@ -43,6 +43,21 @@ class UserService {
       throw new Error("Something went wrong during search");
     }
   }
+
+  async filterLogBooks(criteria: {
+    startDate?: Date;
+    endDate?: Date;
+    latitude?: number;
+    longitude?: number;
+    habitatType?: string;
+    climate?: string;
+  }): Promise<ILogBook[] | null> {
+    try {
+      return await LogBookRepository.filterLogBooks(criteria);
+    } catch (error) {
+      throw new Error("Something went wrong during search");
+    }
+  }
 }
 
 export default new UserService();
