@@ -102,3 +102,28 @@ export const filterLogBooks = async (
     return next(error);
   }
 };
+
+export const listLogBooksPaginated = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const { page, limit, field, order } = req.query;
+
+  const pageNumber = page ? parseInt(page as string, 10) : 1;
+  const pageSize = limit ? parseInt(limit as string, 10) : 10;
+  const sortField = field ? String(field) : "date";
+  const sortOrder: "asc" | "desc" =
+    order === "asc" || order === "desc" ? order : "asc";
+
+  try {
+    const logBooks = await LogBookService.listLogBooksPaginated(
+      pageNumber,
+      pageSize,
+      { field: sortField, order: sortOrder }
+    );
+    return res.json(logBooks);
+  } catch (error) {
+    return next(error);
+  }
+};

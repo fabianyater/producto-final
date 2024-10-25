@@ -102,6 +102,34 @@ class LogBookRepository {
       [sort.field]: sort.order === "asc" ? 1 : -1,
     });
   }
+
+  async listLogBooksPaginated(
+    page: number = 1,
+    limit: number = 10,
+    sort: { field: string; order: "asc" | "desc" } = {
+      field: "date",
+      order: "desc",
+    }
+  ): Promise<{
+    content: ILogBook[];
+    totalElements: number;
+    totalPages: number;
+  }> {
+    const skip = (page - 1) * limit;
+    const content = await LogBook.find({})
+      .sort({ [sort.field]: sort.order === "asc" ? 1 : -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalElements = await LogBook.countDocuments();
+    const totalPages = Math.ceil(totalElements / limit);
+
+    return {
+      content,
+      totalElements,
+      totalPages,
+    };
+  }
 }
 
 export default new LogBookRepository();

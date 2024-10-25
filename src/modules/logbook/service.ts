@@ -70,6 +70,32 @@ class UserService {
       throw new Error("Something went wrong during search");
     }
   }
+
+  async listLogBooksPaginated(
+    page: number = 1,
+    limit: number = 10,
+    sort: { field: string; order: "asc" | "desc" } = {
+      field: "date",
+      order: "desc",
+    }
+  ): Promise<{
+    content: ILogBook[];
+    totalElements: number;
+    size: number;
+    pageNumber: number;
+    totalPages: number;
+  }> {
+    const { content, totalElements, totalPages } =
+      await LogBookRepository.listLogBooksPaginated(page, limit, sort);
+
+    return {
+      content,
+      totalElements,
+      size: limit,
+      pageNumber: page,
+      totalPages,
+    };
+  }
 }
 
 export default new UserService();
