@@ -35,7 +35,7 @@ router.get("/profile", authenticate, async (req, res, next) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/", authenticate, isAdmin, async (req, res, next) => {
   try {
     await getUsers(req, res, next);
   } catch (error) {

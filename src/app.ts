@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import { CustomError } from "./common/errors/customError";
 import { errorHandler } from "./common/middlewars/errorHandler";
@@ -6,8 +7,17 @@ import authRoutes from "./modules/auth/routes";
 import logBookRoutes from "./modules/logbook/routes";
 import permissionRoutes from "./modules/permissions/routes";
 import userRoutes from "./modules/user/routes";
-
 const app: Application = express();
+
+app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+  })
+);
 
 connectDB();
 
