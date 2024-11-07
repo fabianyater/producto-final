@@ -40,9 +40,9 @@ export const getUserProfile = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
-    if (req.user) {
-      console.log(req.user?.userId);
-      const user = await UserService.getUserById(req.user.userId as string);
+    const userId = req.params.userId;
+    if (userId) {
+      const user = await UserService.getUserById(userId);
 
       if (user) {
         const userFound: IUserResponse = {

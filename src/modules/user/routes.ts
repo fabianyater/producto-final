@@ -27,7 +27,7 @@ router.post("/register/partner", async (req, res, next) => {
   }
 });
 
-router.get("/profile", authenticate, async (req, res, next) => {
+router.get("/profile/:userId", authenticate, async (req, res, next) => {
   try {
     await getUserProfile(req, res, next);
   } catch (error) {

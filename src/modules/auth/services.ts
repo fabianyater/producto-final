@@ -1,8 +1,12 @@
 import jwt from "jsonwebtoken";
 import User from "../user/User";
+import { AuthResponse } from "./types";
 
 class AuthService {
-  async login(username: string, password: string): Promise<string | null> {
+  async login(
+    username: string,
+    password: string
+  ): Promise<AuthResponse | null> {
     const user = await User.findOne({ username });
 
     const invalidCredentialsError = new Error("Invalid credentials");
@@ -23,7 +27,7 @@ class AuthService {
       { expiresIn: "1h" }
     );
 
-    return token;
+    return { token, role: user.role, username };
   }
 }
 
