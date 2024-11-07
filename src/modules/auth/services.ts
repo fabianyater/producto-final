@@ -15,9 +15,9 @@ class AuthService {
       throw invalidCredentialsError;
     }
 
-    const passwordMatch = user.comparePassword(user.password);
+    const isMatch = await user.comparePassword(password);
 
-    if (!passwordMatch) {
+    if (!isMatch) {
       throw invalidCredentialsError;
     }
 

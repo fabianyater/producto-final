@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import {
   BadRequestError,
   NotFoundError,
@@ -10,9 +9,6 @@ import { IUser } from "./User";
 
 class UserService {
   async registerUser(userData: RegisterUserDTO): Promise<IUser> {
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    userData.password = hashedPassword;
-
     const existingUser = await UserRepository.findUserByEmail(userData.email);
 
     if (existingUser) {

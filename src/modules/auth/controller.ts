@@ -17,10 +17,12 @@ export const login = async (
 
     if (authResponse) {
       res.status(200).json(authResponse);
+      return;
     }
   } catch (error) {
     if (error instanceof Error) {
       res.status(401).json({ message: error.message });
+      return;
     }
 
     res.status(500).json({ message: "An unknown error occurred" });
