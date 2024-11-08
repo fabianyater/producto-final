@@ -38,6 +38,7 @@ export type CollectedSpecies = {
 };
 
 export interface ILogBook extends Document {
+  id: string;
   title: string;
   date: Date;
   location: Coordinates;
