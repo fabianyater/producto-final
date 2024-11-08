@@ -28,3 +28,33 @@ export const login = async (
     res.status(500).json({ message: "An unknown error occurred" });
   }
 };
+
+export const validateToken = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    res.status(400).json({ message: "Token is required" });
+    return;
+  }
+
+  try {
+    const authResponse = await AuthService.validateToken(token);
+
+    if (authResponse) {
+      res.status(200).json(authResponse);
+      return;
+    }
+
+    res.status(401).json({ message: "Invalid or expired token" });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(401).json({ message: error.message });
+      return;
+    }
+
+    res.status(500).json({ message: "An unknown error occurred" });
+  }
+};
