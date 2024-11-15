@@ -21,6 +21,18 @@ const logBookSchema: Schema<ILogBook> = new mongoose.Schema(
         type: Number,
         required: true,
       },
+      city: {
+        type: String,
+        required: true,
+      },
+      region: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
     },
     weather: {
       temperature: {
@@ -70,69 +82,50 @@ const logBookSchema: Schema<ILogBook> = new mongoose.Schema(
       {
         url: {
           type: String,
-          required: true,
         },
         description: {
           type: String,
-          required: false,
         },
         takenAt: {
           type: Date,
-          required: true,
         },
         photographer: {
+          type: String,
+        },
+      },
+    ],
+    collectedSpecies: [
+      {
+        scientificName: {
+          type: String,
+          required: false,
+        },
+        commonName: {
+          type: String,
+          required: true,
+        },
+        family: {
+          type: String,
+          required: false,
+        },
+        sampleQuantity: {
+          type: Number,
+          required: true,
+        },
+        plantStatus: {
+          type: String,
+          required: true,
+        },
+        photos: {
+          type: [String],
+          required: false,
+        },
+        additionalObservations: {
           type: String,
           required: false,
         },
       },
     ],
-    collectedSpecies: {
-      scientificName: {
-        type: String,
-        required: false,
-      },
-      commonName: {
-        type: String,
-        required: true,
-      },
-      family: {
-        type: String,
-        required: false,
-      },
-      sampleQuantity: {
-        type: Number,
-        required: true,
-      },
-      plantStatus: {
-        type: String,
-        enum: ["viva", "seca", "otra"],
-        required: true,
-      },
-      photos: [
-        {
-          url: {
-            type: String,
-            required: true,
-          },
-          description: {
-            type: String,
-            required: false,
-          },
-          takenAt: {
-            type: Date,
-            required: true,
-          },
-          photographer: {
-            type: String,
-            required: false,
-          },
-        },
-      ],
-      additionalObservations: {
-        type: String,
-        required: false,
-      },
-    },
     additionalObservations: {
       type: String,
       required: false,

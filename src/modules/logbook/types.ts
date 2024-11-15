@@ -1,6 +1,9 @@
 import { Document } from "mongoose";
 
 export type Coordinates = {
+  city: string;
+  region: string;
+  country: string;
   latitude: number;
   longitude: number;
 };
@@ -33,8 +36,8 @@ export type CollectedSpecies = {
   commonName: string;
   family?: string;
   sampleQuantity: number;
-  plantStatus: "viva" | "seca" | "otra";
-  photos: SamplingSiteImage[];
+  plantStatus: string;
+  photos: string[];
 };
 
 export interface ILogBook extends Document {
@@ -44,8 +47,8 @@ export interface ILogBook extends Document {
   location: Coordinates;
   weather: WeatherConditions;
   habitat: HabitatDescription;
-  images: SamplingSiteImage[];
-  collectedSpecies: CollectedSpecies;
+  images?: SamplingSiteImage[];
+  collectedSpecies: CollectedSpecies[];
   additionalObservations: string;
 }
 
@@ -56,6 +59,6 @@ export interface RegisterRequestBody {
   weather: WeatherConditions;
   habitat: HabitatDescription;
   images: SamplingSiteImage[];
-  collectedSpecies: CollectedSpecies;
+  collectedSpecies: CollectedSpecies[];
   additionalObservations: string;
 }

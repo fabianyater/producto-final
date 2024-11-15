@@ -11,7 +11,17 @@ class UserService {
     }
 
     try {
-      return await LogBookRepository.createLogBook(data);
+      const transformedData = {
+        ...data,
+        collectedSpecies: data.collectedSpecies.map((species) => ({
+          ...species,
+          photos: (species.photos as Array<string | { url: string }>).map(
+            (photo) => (typeof photo === "string" ? photo : photo.url)
+          ), // Solo URLs
+        })),
+      };
+
+      return await LogBookRepository.createLogBook(transformedData as ILogBook);
     } catch (error: any) {
       if (error.name === "ValidationError") {
         const messages = Object.values(error.errors).map(
