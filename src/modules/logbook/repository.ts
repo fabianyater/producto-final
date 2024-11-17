@@ -63,8 +63,7 @@ class LogBookRepository {
     query: {
       startDate?: Date;
       endDate?: Date;
-      latitude?: number;
-      longitude?: number;
+      location?: string;
       habitatType?: string;
       climate?: string;
     },
@@ -82,9 +81,8 @@ class LogBookRepository {
       };
     }
 
-    if (query.latitude && query.longitude) {
-      searchQuery["location.latitude"] = query.latitude;
-      searchQuery["location.longitude"] = query.longitude;
+    if (query.location) {
+      searchQuery["location.city"] = { $regex: query.location, $options: "i" };
     }
 
     if (query.habitatType) {

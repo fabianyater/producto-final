@@ -76,8 +76,7 @@ export const filterLogBooks = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
-    const { startDate, endDate, latitude, longitude, habitatType, climate } =
-      req.query;
+    const { startDate, endDate, location, habitatType, climate } = req.query;
 
     const field = req.query.field ? String(req.query.field) : "date";
     const order: "asc" | "desc" =
@@ -88,8 +87,7 @@ export const filterLogBooks = async (
     const filterCriteria = {
       startDate: startDate ? new Date(startDate.toString()) : undefined,
       endDate: endDate ? new Date(endDate.toString()) : undefined,
-      latitude: latitude ? parseFloat(latitude.toString()) : undefined,
-      longitude: longitude ? parseFloat(longitude.toString()) : undefined,
+      location: location ? String(location) : undefined,
       habitatType: habitatType?.toString(),
       climate: climate?.toString(),
     };

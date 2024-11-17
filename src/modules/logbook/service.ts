@@ -78,8 +78,7 @@ class UserService {
     criteria: {
       startDate?: Date;
       endDate?: Date;
-      latitude?: number;
-      longitude?: number;
+      location?: string;
       habitatType?: string;
       climate?: string;
     },
