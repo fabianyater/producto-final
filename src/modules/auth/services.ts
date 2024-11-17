@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import Permission from "../permissions/Permissions";
 import User from "../user/User";
 import { AuthResponse } from "./types";
 
@@ -21,8 +22,19 @@ class AuthService {
       throw invalidCredentialsError;
     }
 
+    const userPermissions = await Permission.find({ userId: user._id });
+    const permissionsWithFunctionNames = userPermissions.map((perm) => ({
+      functionName: perm.functionName,
+      permissions: perm.permissions,
+    }));
+
     const token = jwt.sign(
-      { userId: user._id, username: user.username, role: user.role },
+      {
+        userId: user._id,
+        username: user.username,
+        role: user.role,
+        permissions: permissionsWithFunctionNames,
+      },
       process.env.SECRET_KEY as string,
       { expiresIn: "1d" }
     );
@@ -32,7 +44,13 @@ class AuthService {
       ? decoded.exp * 1000
       : Date.now() + 15 * 1000;
 
-    return { token, role: user.role, username, expirationTime };
+    return {
+      token,
+      role: user.role,
+      username,
+      expirationTime,
+      permissions: permissionsWithFunctionNames,
+    };
   }
 
   async validateToken(token: string): Promise<AuthResponse | null> {
