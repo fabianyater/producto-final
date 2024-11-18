@@ -13,7 +13,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["https://bitacora-web-blue.vercel.app/", "http://localhost:3000"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
