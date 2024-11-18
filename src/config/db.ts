@@ -1,12 +1,14 @@
-import moongose from "mongoose";
-import dotenv from "dotenv";
 import { log } from "console";
+import dotenv from "dotenv";
+import moongose from "mongoose";
+import { getApiUrl } from "../utils";
 
 dotenv.config();
 
 const connectDB = async (): Promise<void> => {
   try {
-    const mongoURI = process.env.MONGODB_URI;
+    const getMongoUri = getApiUrl();
+    const mongoURI = getMongoUri;
 
     if (!mongoURI) {
       throw new Error(
