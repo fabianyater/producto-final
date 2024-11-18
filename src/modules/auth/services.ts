@@ -45,6 +45,7 @@ class AuthService {
       : Date.now() + 15 * 1000;
 
     return {
+      userId: decoded.userId,
       token,
       role: user.role,
       username,

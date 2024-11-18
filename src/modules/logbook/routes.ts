@@ -5,6 +5,7 @@ import {
   addNewLogBook,
   filterLogBooks,
   getLogBookById,
+  getUserLogBookLocations,
   listLogBooksPaginated,
   searchLogBooks,
 } from "./controller";
@@ -51,6 +52,14 @@ router.get("/", authenticate, async (req, res, next) => {
 router.get("/:id", authenticate, async (req, res, next) => {
   try {
     await getLogBookById(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/locations", authenticate, async (req, res, next) => {
+  try {
+    await getUserLogBookLocations(req, res, next);
   } catch (error) {
     next(error);
   }

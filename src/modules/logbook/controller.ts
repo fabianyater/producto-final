@@ -16,6 +16,7 @@ export const addNewLogBook = async (
     collectedSpecies,
     habitat,
     images,
+    createdBy,
   } = req.body;
 
   try {
@@ -28,6 +29,7 @@ export const addNewLogBook = async (
       collectedSpecies,
       habitat,
       images,
+      createdBy,
     };
 
     const response = await LogBookService.addNewLogBook(request as ILogBook);
@@ -148,6 +150,28 @@ export const getLogBookById = async (
     } else {
       return res.status(404).json({ message: "LogBook not found" });
     }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getUserLogBookLocations = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  try {
+    const userId = req.body.userId;
+
+    console.log(userId);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const locations = await LogBookService.getUserLogBookLocations(userId);
+
+    return res.status(200).json(locations);
   } catch (error) {
     return next(error);
   }

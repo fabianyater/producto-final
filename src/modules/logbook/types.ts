@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export type Coordinates = {
   city: string;
@@ -50,6 +50,7 @@ export interface ILogBook extends Document {
   images?: SamplingSiteImage[];
   collectedSpecies: CollectedSpecies[];
   additionalObservations: string;
+  createdBy: Types.ObjectId;
 }
 
 export interface RegisterRequestBody {
@@ -61,4 +62,5 @@ export interface RegisterRequestBody {
   images: SamplingSiteImage[];
   collectedSpecies: CollectedSpecies[];
   additionalObservations: string;
+  createdBy: Types.ObjectId;
 }

@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 import LogBook from "./LogBook";
 import { ILogBook } from "./types";
 
@@ -127,6 +127,21 @@ class LogBookRepository {
       totalElements,
       totalPages,
     };
+  }
+
+  async getUserLogBookLocations(
+    userId: string
+  ): Promise<{ latitude: number; longitude: number }[]> {
+    const objectId = new Types.ObjectId(userId);
+    const locations = await LogBook.find(
+      { createdBy: objectId },
+      { "location.latitude": 1, "location.longitude": 1, _id: 0 } 
+    );
+
+    return locations.map((doc) => ({
+      latitude: doc.location.latitude,
+      longitude: doc.location.longitude,
+    }));
   }
 }
 

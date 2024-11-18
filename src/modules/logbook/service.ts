@@ -17,7 +17,7 @@ class UserService {
           ...species,
           photos: (species.photos as Array<string | { url: string }>).map(
             (photo) => (typeof photo === "string" ? photo : photo.url)
-          ), // Solo URLs
+          ),
         })),
       };
 
@@ -118,6 +118,16 @@ class UserService {
       pageNumber: page,
       totalPages,
     };
+  }
+
+  async getUserLogBookLocations(
+    userId: string
+  ): Promise<{ latitude: number; longitude: number }[]> {
+    try {
+      return await LogBookRepository.getUserLogBookLocations(userId);
+    } catch (error) {
+      throw new Error("Something went wrong during search");
+    }
   }
 }
 
