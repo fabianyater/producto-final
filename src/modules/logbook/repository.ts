@@ -131,16 +131,20 @@ class LogBookRepository {
 
   async getUserLogBookLocations(
     userId: string
-  ): Promise<{ latitude: number; longitude: number }[]> {
+  ): Promise<
+    { latitude: number; longitude: number; city: string; logBookId: string }[]
+  > {
     const objectId = new Types.ObjectId(userId);
     const locations = await LogBook.find(
       { createdBy: objectId },
-      { "location.latitude": 1, "location.longitude": 1, _id: 0 } 
+      { "location.latitude": 1, "location.longitude": 1, "location.city": 1 }
     );
 
     return locations.map((doc) => ({
       latitude: doc.location.latitude,
       longitude: doc.location.longitude,
+      city: doc.location.city,
+      logBookId: (doc._id as Types.ObjectId).toString(),
     }));
   }
 }

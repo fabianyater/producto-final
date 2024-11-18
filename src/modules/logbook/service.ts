@@ -122,7 +122,7 @@ class UserService {
 
   async getUserLogBookLocations(
     userId: string
-  ): Promise<{ latitude: number; longitude: number }[]> {
+  ): Promise<{ latitude: number; longitude: number, city: string }[]> {
     try {
       return await LogBookRepository.getUserLogBookLocations(userId);
     } catch (error) {
