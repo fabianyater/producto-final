@@ -13,9 +13,10 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "*",
-    methods: "*",
-    allowedHeaders: "*", // Allow specific headers
+    origin: "https://bitacora-web-blue.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
   })
 );
 
