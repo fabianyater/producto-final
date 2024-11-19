@@ -22,15 +22,6 @@ app.use(
 
 app.options("*", cors());
 
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.header("Access-Control-Allow-Origin", "https://bitacora-web-blue.vercel.app");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-  next();
-});
-
-
 connectDB();
 
 app.use(express.json());
