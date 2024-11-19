@@ -13,7 +13,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "https://bitacora-web-blue.vercel.app/",
+    origin: "https://bitacora-web-blue.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],

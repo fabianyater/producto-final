@@ -13,6 +13,10 @@ const router = express.Router();
 
 router.post("/register/researcher", async (req, res, next) => {
   try {
+    res.header("Access-Control-Allow-Origin", "https://bitacora-web-blue.vercel.app");
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
     await registerResearcher(req, res, next);
   } catch (error) {
     console.log(error);
