@@ -3,45 +3,22 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import { CustomError } from "./common/errors/customError";
 import { errorHandler } from "./common/middlewars/errorHandler";
 import connectDB from "./config/db";
-import { registerResearcher } from "./modules/user/controller";
+import authRoutes from "./modules/auth/routes";
+import logBookRoutes from "./modules/logbook/routes";
+import permissionRoutes from "./modules/permissions/routes";
+import userRoutes from "./modules/user/routes";
 const app: Application = express();
-const router = express.Router();
 
-
-const allowedOrigins = [
-  "https://bitacora-web-blue.vercel.app", // Frontend
-  "https://producto-final-chi.vercel.app", // Backend
-];
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
-
-app.options("*", cors());
 app.use(express.json());
-
 
 connectDB();
 
-router.post("/register/researcher", async (req, res, next) => {
-  try {
-    await registerResearcher(req, res, next);
-  } catch (error) {
-    console.log(error);
-  }
-});
+app.use(cors());
 
-
-app.use("/users", router);
+app.use("/auth", authRoutes);
+app.use("/permissions", permissionRoutes);
+app.use("/users", userRoutes);
+app.use("/logbooks", logBookRoutes);
 
 app.use(
   (
