@@ -41,7 +41,7 @@ router.post("/register/researcher", async (req, res, next) => {
 });
 
 
-app.use("/users", );
+app.use("/users", router);
 
 app.use(
   (
