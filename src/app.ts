@@ -13,6 +13,29 @@ app.use(express.json());
 
 connectDB();
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://bitacora-web-blue.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Custom-Header", "Valor personalizado");
+
+  // Responder directamente a preflight requests (OPTIONS)
+  if (req.method === "OPTIONS") {
+    res.status(204).end();
+
+    return;
+  }
+
+  next(); // Continúa con la siguiente capa de middleware
+});
+
 app.use(
   cors({
     origin: "*",
@@ -25,19 +48,6 @@ app.use(
     optionsSuccessStatus: 204,
   })
 );
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
 
 app.use("/auth", authRoutes);
 app.use("/permissions", permissionRoutes);
