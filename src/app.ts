@@ -13,12 +13,12 @@ app.use(express.json());
 
 connectDB();
 
-app.use("*", cors());
+app.use(cors());
 
-app.use("/users/register/researcher", (req, res, next) => {
-  console.log(req.body);
-  next();
-});
+app.use("/auth", authRoutes);
+app.use("/permissions", permissionRoutes);
+app.use("/users", userRoutes);
+app.use("/logbooks", logBookRoutes);
 
 app.use(
   (
