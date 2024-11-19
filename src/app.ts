@@ -26,6 +26,14 @@ app.use(
   })
 );
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://bitacora-web-blue.vercel.app");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 app.use("/auth", authRoutes);
 app.use("/permissions", permissionRoutes);
 app.use("/users", userRoutes);
