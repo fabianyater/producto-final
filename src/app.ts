@@ -11,7 +11,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: ["https://bitacora-web-blue.vercel.app", "http://localhost:3000"],
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
