@@ -1,13 +1,5 @@
 import express from "express";
-import { authenticate } from "../../common/middlewars/auth";
-import { isAdmin } from "../../common/middlewars/isAdmin";
-import {
-  deleteUser,
-  getUserProfile,
-  getUsers,
-  registerPartner,
-  registerResearcher,
-} from "./controller";
+import { registerResearcher } from "./controller";
 
 const router = express.Router();
 
@@ -18,6 +10,5 @@ router.post("/register/researcher", async (req, res, next) => {
     console.log(error);
   }
 });
-
 
 export default router;
