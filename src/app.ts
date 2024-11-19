@@ -9,20 +9,19 @@ import permissionRoutes from "./modules/permissions/routes";
 import userRoutes from "./modules/user/routes";
 const app: Application = express();
 
+app.use(express.json());
+
+connectDB();
+
 app.use(
   cors({
-    origin: true,
+    origin: "https://bitacora-web-blue.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
     optionsSuccessStatus: 200,
-    preflightContinue: true,
   })
 );
-
-//connectDB();
-
-app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/permissions", permissionRoutes);
