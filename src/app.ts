@@ -13,7 +13,18 @@ app.use(express.json());
 
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://bitacora-web-blue.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Content-Type", "Authorization"],
+    maxAge: 86400,
+    preflightContinue: true,
+    optionsSuccessStatus: 204,
+  })
+);
 
 app.use("/auth", authRoutes);
 app.use("/permissions", permissionRoutes);
