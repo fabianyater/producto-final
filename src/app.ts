@@ -11,9 +11,25 @@ const app: Application = express();
 
 app.use(express.json());
 
-connectDB();
+const allowedOrigins = [
+  "https://bitacora-web-blue.vercel.app", // Frontend
+  "https://producto-final-chi.vercel.app", // Backend
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 
-app.use(cors());
+connectDB();
 
 app.use("/users", userRoutes);
 
