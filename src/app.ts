@@ -3,8 +3,10 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import { CustomError } from "./common/errors/customError";
 import { errorHandler } from "./common/middlewars/errorHandler";
 import connectDB from "./config/db";
-import userRoutes from "./modules/user/routes";
+import { registerResearcher } from "./modules/user/controller";
 const app: Application = express();
+const router = express.Router();
+
 
 const allowedOrigins = [
   "https://bitacora-web-blue.vercel.app", // Frontend
@@ -30,7 +32,16 @@ app.use(express.json());
 
 connectDB();
 
-app.use("/users", userRoutes);
+router.post("/register/researcher", async (req, res, next) => {
+  try {
+    await registerResearcher(req, res, next);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
+app.use("/users", );
 
 app.use(
   (
