@@ -11,7 +11,7 @@ const app: Application = express();
 
 app.use(cors());
 
-app.use(
+/* app.use(
   cors({
     origin: ["https://bitacora-web-blue.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -19,7 +19,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
     optionsSuccessStatus: 200,
   })
-);
+); */
 
 app.options("*", (req, res) => {
   res.header("Access-Control-Allow-Origin", "https://bitacora-web-blue.vercel.app");
@@ -32,10 +32,10 @@ connectDB();
 
 app.use(express.json());
 
-app.use("/auth", authRoutes);
-app.use("/permissions", permissionRoutes);
-app.use("/users", userRoutes);
-app.use("/logbooks", logBookRoutes);
+app.use("/auth", cors(), authRoutes);
+app.use("/permissions", cors(), permissionRoutes);
+app.use("/users", cors(), userRoutes);
+app.use("/logbooks", cors(), logBookRoutes);
 
 app.use(
   (
