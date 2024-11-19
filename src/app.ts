@@ -16,6 +16,7 @@ app.use(
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
     optionsSuccessStatus: 200,
+    preflightContinue: true,
   })
 );
 
